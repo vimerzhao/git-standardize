@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+LC_ALL=C
+
+#!/bin/sh
+RED=$(tput setaf 1)
+NORMAL=$(tput sgr0)
+
+local_branch="$(git rev-parse --abbrev-ref HEAD)"
+
+path=$(pwd)"/.githooks/branch-rule"
+valid_branch_regex="$(cat ${path})"
+
+if [[ ! $local_branch =~ $valid_branch_regex ]]; then
+    echo "${RED}NOT MATCH ${valid_branch_regex}${NORMAL}"
+    exit 1
+fi
+exit 0

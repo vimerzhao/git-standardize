@@ -1,0 +1,13 @@
+#!/bin/sh
+RED=$(tput setaf 1)
+NORMAL=$(tput sgr0)
+path=$(pwd)"/.githooks/commit-rule"
+regex="$(cat ${path})"
+file=`cat $1` # The file that contains the commit message
+# If the commit message does not match the regex
+if ! [[ ${file} =~ ${regex} ]]; then
+  echo "${RED}NOT MATCH ${regex} ${NORMAL}"
+  echo ${path}
+  exit 1
+fi
+exit 0
