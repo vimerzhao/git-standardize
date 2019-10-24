@@ -40,14 +40,13 @@ bugfix-authorize-error
 
 [source,shell]
 ----
-cd ..
-git clone https://github.com/vimerzhao/git-standardize.git
-cd -
-cp -R ../git-standardize/.githooks ./
-cd .githooks
+git clone https://github.com/vimerzhao/git-standardize.git ~/.git-standardize
+git config core.hooksPath ~/.git-standardize/.githooks
+cd ~/git-standardize/.githooks
 chmod +x *[^rule]
-cd ..
-git config core.hooksPath .githooks
+cd -
+echo "source ~/.git-standardize/git-command.sh" >> .bashrc
+echo "source ~/.git-standardize/git-command.sh" >> .zshrc
 ----
 
 == branch规范
@@ -114,6 +113,21 @@ image:./assets/Snipaste_2019-10-24_15-17-33.png[alt="Demo"]
 image:./assets/Snipaste_2019-10-24_15-13-58.png[alt="Demo"]
 
 == 命令
+所有的辅助命令均以 `gs_` 开头，这样的好处是可以利用 `Tab` 键的补全机制自动选择命令，避免冗长难记的输入
+
+image:./assets/ezgif-1-2df9ac477e34.gif[alt="Demo"]
+
+=== gs_clear_local_barnch
+清理本地存在但是服务器端不存在的分支 +
+
+=== gs_branch_last_commit
+查看分支最后提交人和存活周期，辅助删除过期分支 +
+
+=== gs_past_commit_statistic
+统计过去一段时间内的代码提交数量，参数 +
+
+* $1 : 时间段或者起始时间，如 `7.days` 、`2019-10-10`
+
 
 == 参考
 * https://jaeger.itscoder.com/dev/2018/09/12/using-git-in-project.html[项目中的 Git 使用规范]
