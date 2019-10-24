@@ -40,13 +40,14 @@ bugfix-authorize-error
 
 [source,shell]
 ----
-git clone https://github.com/vimerzhao/git-standardize.git ~/.git-standardize
-git config core.hooksPath ~/.git-standardize/.githooks
-cd ~/git-standardize/.githooks
-chmod +x *[^rule]
+cd ..
+git clone https://github.com/vimerzhao/git-standardize.git
 cd -
-echo "source ~/.git-standardize/git-command.sh" >> .bashrc
-echo "source ~/.git-standardize/git-command.sh" >> .zshrc
+cp -R ../git-standardize/.githooks ./
+cd .githooks
+chmod +x *[^rule]
+cd ..
+git config core.hooksPath .githooks
 ----
 
 == branch规范
