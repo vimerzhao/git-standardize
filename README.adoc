@@ -50,6 +50,7 @@ cd ..
 git config core.hooksPath .githooks
 cd ..
 rm -rf git-standardize
+cd -
 ----
 
 如果管理员配置好了hook并完成了服务器端的push，那么对于其他开发者，只需要
