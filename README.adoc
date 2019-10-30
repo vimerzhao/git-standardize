@@ -36,7 +36,7 @@ bugfix-authorize-error
 - [ ] 基于 `hook` 能力的 *服务器端* 检查，
 - [x] 基于日常开发需要，封装常见操作，降低使用成本，如查看分支最后更新时间以提醒清理、统计一段时间内开发者的代码提交数量
 
-如何配置？首先 `cd path/to/your/project` ，然后复制以下代码并执行
+如何配置？一般一个项目的仓库都一个较为熟悉Git的开发进行功能的管理，对于这个管理者，首先 `cd path/to/your/project` ，然后复制以下代码并执行
 
 [source,shell]
 ----
@@ -48,7 +48,19 @@ cd .githooks
 chmod +x *[^rule]
 cd ..
 git config core.hooksPath .githooks
+cd ..
+rm -rf git-standardize
 ----
+
+如果管理员配置好了hook并完成了服务器端的push，那么对于其他开发者，只需要
+
+[source,shell]
+----
+git pull --rebase
+git config core.hooksPath .githooks
+----
+
+NOTE: 这里考虑到平台通用性和开发的技术栈不同，为了减少接入成本，统一使用 `bash` 进行编写，虽然看起来 `python` 或者 `ruby` 之类的语言更加合适。
 
 == branch规范
 只允许使用以下分支命名项目
@@ -131,6 +143,8 @@ image:./assets/ezgif-1-2df9ac477e34.gif[alt="Demo"]
 
 
 == 参考
+* https://githooks.com/[githooks]
+* https://itnext.io/using-git-hooks-to-enforce-branch-naming-policy-ffd81fa01e5e[Using Git hooks to enforce branch naming policy]
 * https://jaeger.itscoder.com/dev/2018/09/12/using-git-in-project.html[项目中的 Git 使用规范]
 * https://nvie.com/posts/a-successful-git-branching-model/[A successful Git branching model]
 * https://github.com/geeeeeeeeek/git-recipes/wiki/5.4-Git-%E9%92%A9%E5%AD%90%EF%BC%9A%E8%87%AA%E5%AE%9A%E4%B9%89%E4%BD%A0%E7%9A%84%E5%B7%A5%E4%BD%9C%E6%B5%81[5.4 Git 钩子：自定义你的工作流]
