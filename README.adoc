@@ -41,7 +41,7 @@ bugfix-authorize-error
 [source,shell]
 ----
 cd ..
-git clone https://github.com/vimerzhao/git-standardize.git
+git clone http://git.code.oa.com/vimerzhao/git-standardize.git
 cd -
 cp -R ../git-standardize/.githooks ./
 cd .githooks
