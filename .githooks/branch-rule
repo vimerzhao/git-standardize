@@ -1,1 +1,1 @@
-^(feature|release|hotfix|master)[a-zA-Z0-9-]*$
+^(master|feature|release|hotfix|master)[a-zA-Z0-9-]*$
