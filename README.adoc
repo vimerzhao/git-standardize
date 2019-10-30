@@ -146,6 +146,9 @@ image:./assets/ezgif-1-2df9ac477e34.gif[alt="Demo"]
 * $1 : 时间段或者起始时间，如 `7.days` 、`2019-10-10`
 
 
+== 最佳实践
+* 使用命令行而不是GUI
+
 == 参考
 * https://githooks.com/[githooks]
 * https://itnext.io/using-git-hooks-to-enforce-branch-naming-policy-ffd81fa01e5e[Using Git hooks to enforce branch naming policy]
