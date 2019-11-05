@@ -151,11 +151,32 @@ git config core.hooksPath .githooks
 ----
 
 使用效果如下：
+
 .非法分支命名
 image:./assets/Snipaste_2019-10-24_15-17-33.png[alt="Demo"]
 
 .非法commit信息
 image:./assets/Snipaste_2019-10-24_15-13-58.png[alt="Demo"]
+
+== 仓库使用
+
+=== GitHook
+如上所述，使用者clone下仓库后应该配置本地GitHook，避免不小心提交脏信息
+
+[source,shell]
+----
+git clone ****
+git config core.hooksPath .githooks
+----
+
+=== 别名设置
+==== Bash别名
+
+==== oh-my-zsh
+
+link:https://github.com/robbyrussell/oh-my-zsh/wiki/Cheatsheet#git[git-cheatsheet]
+
+==== Git别名
 
 === 命令封装
 
@@ -175,16 +196,9 @@ image:./assets/ezgif-1-2df9ac477e34.gif[alt="Demo"]
 * $1 : 时间段或者起始时间，如 `7.days` 、`2019-10-10`
 
 
-== 仓库使用
-
-=== 配置GitHook
-如上所述，使用者clone下仓库后应该配置本地GitHook，避免不小心提交脏信息
-
-[source,shell]
-----
-git clone ****
-git config core.hooksPath .githooks
-----
-
 == 持续优化
+
+=== 使用命令行
+
+=== 维护dotfile
 
