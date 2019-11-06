@@ -15,7 +15,7 @@ gs_branch_last_commit() {
 }
 
 # 统计过去一段时间内的代码提交数量，参数 +
-# 
+#
 # $1 : 时间段或者起始时间，如 `7.days` 、`2019-10-10`
 gs_past_commit_statistic() {
     git log --format='%aN' | \
@@ -26,3 +26,7 @@ gs_past_commit_statistic() {
         done
 }
 
+# 展示所有的别名规则，参考 link:https://stackoverflow.com/questions/7066325/list-git-aliases[list-git-aliases]
+gs_show_all_alias() {
+    git config --get-regexp ^alias\. | sed -e s/^alias\.// -e s/\ /\ =\ /
+}

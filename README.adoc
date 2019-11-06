@@ -5,7 +5,8 @@
 :appendix-caption: 附录
 :sectnumlevels: 3
 
-== 本文宗旨
+== 本文导读
+=== 问题背景
 大部分程序员对于Git的理解还停留在
 
 ----
@@ -41,6 +42,14 @@ bugfix-authorize-error
 基于以上三个例子，Git使用的工程化、标准化是十分必要的。 +
 我们所谓的造轮子，亦不仅仅存在于编程中，日常工作中常有大量的重复工作，亦是一种论文，本文即希望规范化、流程化Git的使用，以期提高开发者的效率。
 本文基于作者工作中教训和思考积淀而成，虽曰“最佳”，但也只是现阶段我心中的最佳实践，仅供参考。
+
+=== 阅读须知
+Git的作者Linus也是Linux的做个，Git最初也是Linux内核开发者在使用，所以其本身的配置和使用也是充满了类Unix的味道，诸如别名、命令、配置文件等等，都是类Uniux开发者习以为常的东西，但对于客户端、大前端的开发者可能相对陌生，所以，继续阅读本文之前，希望你对以下知识至少是有了解的
+
+* 基本的Shell命令： `alias` / `source` / `grep` 等
+* 终端的基本使用，如通过 `Tab` 键可以自动补全命令
+* 配置文件的使用，如Bash的 `.bashrc` / `.bash_profile` ， zsh 的 `.zshrc` ，Git 的 `.gitconfig` ，他们的原理都是相似的
+
 
 == 仓库创建
 无论是Github还是工蜂，我们新建一个Git仓库后，往往会出现以下提示：
@@ -159,6 +168,7 @@ image:./assets/Snipaste_2019-10-24_15-17-33.png[alt="Demo"]
 image:./assets/Snipaste_2019-10-24_15-13-58.png[alt="Demo"]
 
 == 仓库使用
+=== gitconfig
 
 === GitHook
 如上所述，使用者clone下仓库后应该配置本地GitHook，避免不小心提交脏信息
@@ -170,13 +180,73 @@ git config core.hooksPath .githooks
 ----
 
 === 别名设置
-==== Bash别名
+下文会专门论述为什么推荐你在命令行而不是GUI工具中使用Git，本章主要讲述如何使用别名。别名在类Unix系统中普遍存在，即将我们最常用的命令设置一个更短更容易记住的别名，以提高使用效率。
 
 ==== oh-my-zsh
+zsh是一款类似于 GitBash 的终端软件，而 oh-my-zsh 则是基于 zsh 深度定制的版本，其 `git` 插件提供了一套别名，推荐使用，避免重复造轮子。 +
+文档位置： https://github.com/robbyrussell/oh-my-zsh/wiki/Cheatsheet#git[git-cheatsheet] +
+配置位置： https://github.com/robbyrussell/oh-my-zsh/blob/master/plugins/git/git.plugin.zsh[git.plugin.zsh]
 
-link:https://github.com/robbyrussell/oh-my-zsh/wiki/Cheatsheet#git[git-cheatsheet]
+使用这套别名可以有以下好处
 
-==== Git别名
+* 省力省心，开源社区长期优化的配置大概率比我们自己折腾的更加科学和健壮
+* 通用性强，任何一个使用 oh-my-zsh 的用户和你的别名习惯都是一致的，便于交流
+
+==== GitBash
+如果开发环境是 Mac/Linux ，强烈推荐使用 oh-my-zsh，如果是 Windows，目前看来还是使用 GitBash 最佳，推荐将 https://github.com/robbyrussell/oh-my-zsh/blob/master/plugins/git/git.plugin.zsh[git.plugin.zsh] 的别名规则平移到 GitBash 下，这样也符合上文提到的通用性原则。移植方法很简单，如下
+
+----
+# 大意如此，视具体情况可能需要稍作修改
+move path/to/oh-my-zsh/plugins/git/git.plugin.zsh ~/.git.plugin.zsh
+echo `source ~/.git.plugin.zsh >> .bash_profile`
+----
+
+==== GitAlias
+GitBash 有一个不太友好的问题，就是不支持自动补全，对于像 `git checkout` 这样的命令，非常需要自动补全，否则很容易拼错分支名称
+
+image:target[alt=""]
+
+所以推荐配置Git别名，为了提高通用性，Git别名同样推荐基于 oh-my-zsh 的别名规则进行移植，下面是一段 https://github.com/robbyrussell/oh-my-zsh/blob/master/plugins/git/git.plugin.zsh[git.plugin.zsh] 的配置
+
+----
+...
+alias gbr='git branch --remote'
+alias gbs='git bisect'
+alias gbsb='git bisect bad'
+alias gbsg='git bisect good'
+...
+----
+
+很容易发现，每个别名均以 `g` 开头以区分其他命令，而 GitAlias 均以 `git` 开头，所以对应的配置可以是
+
+----
+...
+git config --global alias.br    'branch --remote'
+git config --global alias.bs    'bisect'
+git config --global alias.bsb   'bisect bad'
+git config --global alias.bsg   'bisect good'
+...
+----
+
+如此一来， `git branch --remote` 这个命令在 Mac/Windows/Linux 均可以通过 `gbr` 或者 `git br` 访问到。
+
+[NOTE]
+====
+如何移植 https://github.com/robbyrussell/oh-my-zsh/blob/master/plugins/git/git.plugin.zsh[git.plugin.zsh]？一行一行的修改 `alias` 语法为 `git config alias` 语法吗？笔者的解决方法
+
+----
+# 提取所有关于别名的配置，并暂存
+grep -E "alias g[a-zA-Z]+=.*" path/to/git.plugin.zsh > temp1.sh
+# 改成GitAlias风格的别名
+sed "s/^alias g/git config --global alias./g" temp1.sh > temp2.sh
+# 去掉命令里面的 `git`，符合 GitAlias 语法
+sed "s/git //g" temp2.sh > git.alias.config.sh
+# 进行配置，运行后会注册到 .gitconfig
+source git.alias.config.sh
+# 删除中间文件
+rm temp*
+----
+====
 
 === 命令封装
 
@@ -184,6 +254,7 @@ link:https://github.com/robbyrussell/oh-my-zsh/wiki/Cheatsheet#git[git-cheatshee
 
 image:./assets/ezgif-1-2df9ac477e34.gif[alt="Demo"]
 
+// BEGIN 以下是脚本自动生成，不要修改，会被覆盖
 ==== gs_clear_local_barnch
 清理本地存在但是服务器端不存在的分支 +
 
@@ -195,6 +266,7 @@ image:./assets/ezgif-1-2df9ac477e34.gif[alt="Demo"]
 
 * $1 : 时间段或者起始时间，如 `7.days` 、`2019-10-10`
 
+// END 以下是脚本自动生成，不要修改，会被覆盖
 
 == 持续优化
 
@@ -202,3 +274,11 @@ image:./assets/ezgif-1-2df9ac477e34.gif[alt="Demo"]
 
 === 维护dotfile
 
+== 常见问题
+
+
+
+== TODO
+* [ ] 别名和高级命令积累与整理
+* [ ] 哪些是需要全局配置的，哪些是需要项目内配置的
+* [ ]
