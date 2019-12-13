@@ -276,3 +276,6 @@ image:./assets/ezgif-1-2df9ac477e34.gif[alt="Demo"]
 * $1 : 时间段或者起始时间，如 `7.days` 、`2019-10-10`
 
 // END 以下是脚本自动生成，不要修改，会被覆盖
+
+== 总结
+以上是笔者近期的思考总结，后面有新的想法和实践都会在此更新，欢迎关注 https://github.com/vimerzhao/git-standardize[git-standardize]。另外推荐阅读： https://github.com/vimerzhao/vimerzhao.github.io/blob/master/dev-tools/2019-11-26-git-internals.adoc[Git内部原理剖析]
