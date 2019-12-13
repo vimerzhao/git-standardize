@@ -6,6 +6,8 @@
 :sectnumlevels: 3
 
 == 本文导读
+本文对应的 git-standardize 项目地址 https://github.com/vimerzhao/git-standardize[https://github.com/vimerzhao/git-standardize]
+
 === 问题背景
 大部分程序员对于Git的理解还停留在
 
@@ -40,11 +42,11 @@ bugfix-authorize-error
 显然，这种写法无法忽略子模块的 build 目录。
 
 基于以上三个例子，Git使用的工程化、标准化是十分必要的。 +
-我们所谓的造轮子，亦不仅仅存在于编程中，日常工作中常有大量的重复工作，亦是一种论文，本文即希望规范化、流程化Git的使用，以期提高开发者的效率。
-本文基于作者工作中教训和思考积淀而成，虽曰“最佳”，但也只是现阶段我心中的最佳实践，仅供参考。
+我们所谓的造轮子，亦不仅仅存在于编程中，日常工作中常有大量的重复工作，亦是一种轮子，本文即 *希望规范化、流程化Git的使用* ，以期提高开发者的效率。 +
+本文基于作者工作中的教训和思考积淀而成，虽曰“最佳”，但也只是现阶段我心中的最佳实践，仅供参考。
 
 === 阅读须知
-Git的作者Linus也是Linux的做个，Git最初也是Linux内核开发者在使用，所以其本身的配置和使用也是充满了类Unix的味道，诸如别名、命令、配置文件等等，都是类Uniux开发者习以为常的东西，但对于客户端、大前端的开发者可能相对陌生，所以，继续阅读本文之前，希望你对以下知识至少是有了解的
+Git的作者Linus也是Linux的作者，Git最初也是Linux内核开发者在使用，所以其本身的配置和使用也是充满了类Unix的味道，诸如别名、命令、配置文件等等，都是Unix/Linux开发者习以为常的东西，但对于客户端、大前端的开发者可能相对陌生，所以，继续阅读本文之前，希望你对以下知识至少是有了解的
 
 * 基本的Shell命令： `alias` / `source` / `grep` 等
 * 终端的基本使用，如通过 `Tab` 键可以自动补全命令
@@ -59,7 +61,7 @@ image:./assets/Snipaste_2019-11-05_19-38-20.png[]
 某种意义上，这幅图会带来很多误解，我们在创建一个Git仓库后还有很多事情要做，一开始，我们或许习惯于渐进式的改进，但我们应该意识到这种工作是可以 *流程化、自动化* 的，即不要等到发现问题再去解决，而应该一开始就建立有效、可复用的机制。
 
 === 信息配置
-使用 `git config` 配置必须要的用户信息+
+使用 `git config` 配置必须要的用户信息 +
 
 反面案例：
 
@@ -70,11 +72,9 @@ name@gmail.com
 的信息进入了提交历史
 ----
 
-* [ ] GitHook支持
-
 === gitignore
 
-link:https://github.com/github/gitignore[github-gitignore] 提供了各类型项目的 `.gitignore` 模版，基本可以直接使用，如需定制，参考 link:https://git-scm.com/docs/gitignore[Git - gitignore Documentation] ，确保自己理解了语法规则。
+link:https://github.com/github/gitignore[github-gitignore] 提供了各类型项目的 `.gitignore` 模版，基本可以直接使用，如需定制，参考 link:https://git-scm.com/docs/gitignore[Git - gitignore Documentation] ，确保自己理解了语法规则。一般而言，本地的配置、编译生成的中间文件是需要在项目建立之初就添加 `.gitignore` 的。
 
 === 分支规范
 
@@ -83,7 +83,7 @@ link:https://github.com/github/gitignore[github-gitignore] 提供了各类型项
 * `master`
 ** 主分支，也是用于部署生产环境的分支，确保 `master` 分支稳定性，任何时间都不能直接修改代码
 * `release`
-** `release` 为预上线分支，发布提测阶段，会 `release` 分支代码为基准提测
+** `release` 为预上线分支，发布提测阶段，会以 `release` 分支代码为基准提测
 ** 分支命名细则: `release-version`
 ** 当有一组 `feature` 开发完成，首先会合并到 `master` 分支，进入提测时，会创建 `release` 分支
 ** 如果测试过程中若存在bug需要修复，则直接由开发者在 `release` 分支修复并提交
@@ -97,6 +97,8 @@ link:https://github.com/github/gitignore[github-gitignore] 提供了各类型项
 ** 分支命名细则: `feature-creator-description`
 
 WARNING: 是否需要引入 `develop` 分支以维持 `master` 分支的稳定性（上述机制的不足之处）有待商榷，过于复杂也不是一件好事，保证 *合入分支自身的质量* 看起来是更好的解决方案
+
+推荐一篇参考文章 link:https://nvie.com/posts/a-successful-git-branching-model/[A successful Git branching model » nvie.com]
 
 === commit规范
 
@@ -170,6 +172,8 @@ image:./assets/Snipaste_2019-10-24_15-13-58.png[alt="Demo"]
 == 仓库使用
 === gitconfig
 
+参考 https://git-scm.com/book/en/v2/Customizing-Git-Git-Configuration[Git - Git Configuration]
+
 === GitHook
 如上所述，使用者clone下仓库后应该配置本地GitHook，避免不小心提交脏信息
 
@@ -202,11 +206,8 @@ echo `source ~/.git.plugin.zsh >> .bash_profile`
 ----
 
 ==== GitAlias
-GitBash 有一个不太友好的问题，就是不支持自动补全，对于像 `git checkout` 这样的命令，非常需要自动补全，否则很容易拼错分支名称
-
-image:target[alt=""]
-
-所以推荐配置Git别名，为了提高通用性，Git别名同样推荐基于 oh-my-zsh 的别名规则进行移植，下面是一段 https://github.com/robbyrussell/oh-my-zsh/blob/master/plugins/git/git.plugin.zsh[git.plugin.zsh] 的配置
+GitBash 使用 *Linux别名* 时有一个不太友好的问题，就是不支持自动补全，对于像 `git checkout` 这样的命令，非常需要自动补全，否则很容易拼错分支名称。 +
+所以推荐配置 *Git别名* ，为了提高通用性，Git别名同样推荐基于 oh-my-zsh 的别名规则进行移植，下面是一段 https://github.com/robbyrussell/oh-my-zsh/blob/master/plugins/git/git.plugin.zsh[git.plugin.zsh] 的Linux别名配置
 
 ----
 ...
@@ -217,7 +218,7 @@ alias gbsg='git bisect good'
 ...
 ----
 
-很容易发现，每个别名均以 `g` 开头以区分其他命令，而 GitAlias 均以 `git` 开头，所以对应的配置可以是
+很容易发现，每个别名均以 `g` 开头以区分其他命令，而 GitAlias 均以 `git` 开头，所以对应的Git别名配置可以是
 
 ----
 ...
@@ -229,6 +230,14 @@ git config --global alias.bsg   'bisect good'
 ----
 
 如此一来， `git branch --remote` 这个命令在 Mac/Windows/Linux 均可以通过 `gbr` 或者 `git br` 访问到。
+
+[NOTE]
+====
+Linux别名： 通过bash命令 `alias` 设置。
+
+Git别名：通过 `git config --global alias` 设置。
+
+====
 
 [NOTE]
 ====
@@ -267,18 +276,3 @@ image:./assets/ezgif-1-2df9ac477e34.gif[alt="Demo"]
 * $1 : 时间段或者起始时间，如 `7.days` 、`2019-10-10`
 
 // END 以下是脚本自动生成，不要修改，会被覆盖
-
-== 持续优化
-
-=== 使用命令行
-
-=== 维护dotfile
-
-== 常见问题
-
-
-
-== TODO
-* [ ] 别名和高级命令积累与整理
-* [ ] 哪些是需要全局配置的，哪些是需要项目内配置的
-* [ ]
